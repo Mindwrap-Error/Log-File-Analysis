@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block title %}Visualizations - {{ filename }}{% endblock %}
+
+{% block body %}
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        font-family: system-ui, -apple-system, sans-serif;
+    }
+    h1 {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 1.5rem;
+    }
+    .plot-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    .plot-full, .plot-half {
+        flex: 1;
+    }
+    .plot-full {
+        min-width: 100%;
+    }
+    .plot-half {
+        min-width: calc(50% - 0.5rem);
+    }
+    .card {
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    .card-header h5 {
+        margin: 0;
+        font-size: 1rem;
+    }
+    .card-body {
+        padding: 1rem;
+    }
+    .img-fluid {
+        width: 100%;
+        height: auto;
+    }
+    .btn {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        background-color: white;
+        border: 1px solid #4285f4;
+        color: #4285f4;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.75rem;
+    }
+    .btn-secondary {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: #f5f5f5;
+        color: #333;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.875rem;
+        margin-top: 1rem;
+    }
+    .time-range-form {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 6px;
+        margin-bottom: 1.5rem;
+    }
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    .form-group {
+        flex: 1;
+        min-width: 200px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 0.25rem;
+        font-weight: 500;
+    }
+    .form-control {
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+    }
+</style>
+
+<div class="container">
+    <h1>Visualizations for: {{ filename }}</h1>
+    
+    <!-- Time Range Selector Form -->
+    <form method="GET" action="{{ url_for('show_plots', filename=filename) }}" class="time-range-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="from_date">From Date</label>
+                <input type="date" id="from_date" name="from_date" class="form-control" 
+                       value="{{ from_date if from_date else '' }}">
+            </div>
+            <div class="form-group">
+                <label for="from_time">From Time</label>
+                <input type="time" id="from_time" name="from_time" class="form-control" step="1"
+                       value="{{ from_time if from_time else '' }}">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="to_date">To Date</label>
+                <input type="date" id="to_date" name="to_date" class="form-control" 
+                       value="{{ to_date if to_date else '' }}">
+            </div>
+            <div class="form-group">
+                <label for="to_time">To Time</label>
+                <input type="time" id="to_time" name="to_time" class="form-control" step="1"
+                       value="{{ to_time if to_time else '' }}">
+            </div>
+        </div>
+        <div class="form-row">
+            <button type="submit" class="btn btn-primary">Apply Time Range</button>
+            <a href="{{ url_for('show_plots', filename=filename) }}" class="btn btn-outline-secondary">
+                Reset Time Range
+            </a>
+        </div>
+    </form>
+
+<div class="container">
+    <h1>Visualizations for: {{ filename }}</h1>
+    
+    <div class="plot-row">
+        <div class="plot-full">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Events Over Time</h5>
+                    <a href="{{ url_for('download_plot', plot_type='line', filename=filename, from_date=from_date, from_time=from_time, to_date=to_date, to_time=to_time) }}" class="btn">Download PNG</a>
+                </div>
+                <div class="card-body">
+                    <img src="data:image/png;base64,{{ line_plot }}" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="plot-row">
+        <div class="plot-half">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Level Distribution</h5>
+                    <a href="{{ url_for('download_plot', plot_type='pie', filename=filename) }}" class="btn">Download PNG</a>
+                </div>
+                <div class="card-body">
+                    <img src="data:image/png;base64,{{ pie_chart }}" class="img-fluid">
+                </div>
+            </div>
+        </div>
+        <div class="plot-half">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Event Code Distribution</h5>
+                    <a href="{{ url_for('download_plot', plot_type='bar', filename=filename) }}" class="btn">Download PNG</a>
+                </div>
+                <div class="card-body">
+                    <img src="data:image/png;base64,{{ bar_chart }}" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="{{ url_for('display_logs', filename=filename) }}" class="btn-secondary">Back to Log View</a>
+</div>
+{% endblock %}

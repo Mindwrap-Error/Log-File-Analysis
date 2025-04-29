@@ -1,0 +1,220 @@
+\documentclass{article}
+\usepackage{graphicx}
+
+\title{Project Report}
+\author{Rohan Jadhav}
+\date{29 April 2025}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+This project is a web-based application developed using Python and the Flask framework. Its primary function is to parse, filter, and visualize Apache log files in an interactive and user-friendly manner. Users can upload log files in the Apache format, apply various filters based on time periods, severity levels, and event identifiers, and download the filtered logs in CSV format. The application also offers dynamic data visualizations to help identify trends and patterns in the log data. These visualizations can be tailored for specific time frames using the filtering options available on the plots page.
+
+The application includes several core features:
+\begin{itemize}
+    \item \textbf{Apache File Support}: Users can upload Apache log files, which are automatically converted into CSV format to enable easier analysis.
+    \item \textbf{Filtering Capabilities}: Users can filter the log data based on date, time, log severity level, and specific event IDs, allowing for focused analysis.
+    \item \textbf{Data Visualization}: The system generates insightful plots including time series graphs, distribution charts, and frequency plots.
+    \item \textbf{Export Options}: Users can download both the filtered log data and generated visualizations in user-friendly formats such as CSV and PNG.
+\end{itemize}
+
+\section{Requirements}
+All the dependencies and libraries used in the project are documented in the \texttt{requirements.txt} file, which is located in the root directory of the project alongside the \texttt{app.py} file. Below is a comprehensive list of the Python modules used:
+
+\begin{verbatim}
+blinker==1.9.0
+click==8.1.8
+contourpy==1.3.1
+cycler==0.12.1
+Flask==3.1.0
+fonttools==4.57.0
+itsdangerous==2.2.0
+Jinja2==3.1.6
+kiwisolver==1.4.8
+MarkupSafe==3.0.2
+matplotlib==3.10.1
+numpy==2.2.4
+packaging==24.2
+pillow==11.2.1
+pyparsing==3.2.3
+python-dateutil==2.9.0.post0
+six==1.17.0
+Werkzeug==3.1.3
+\end{verbatim}
+
+To set up and run the project, Python and pip must be installed on your system. The steps to install the dependencies are as follows:
+\begin{enumerate}
+    \item Verify that Python and pip are installed on your system.
+    \item Download the \texttt{requirements.txt} file.
+    \item Execute the following command in your terminal to install all required modules:
+    \begin{verbatim}
+    pip install -r requirements.txt
+    \end{verbatim}
+\end{enumerate}
+
+\section{Running Instructions}
+Once all dependencies are installed, navigate to the directory containing \texttt{app.py} and run the following command to start the application:
+\begin{verbatim}
+flask --app app run
+\end{verbatim}
+This will launch the Flask development server, allowing you to access the website in your browser.
+
+\section{Website Layout}
+Below is a detailed description of each page included in the website.
+
+\subsection{View Logs Page}
+This page provides a comprehensive overview of all uploaded log files. At the top of the page, there is a navigation button that leads to the Upload Logs page. For each uploaded log file, there are quick action buttons that allow users to view associated graphs, display the log content in CSV format, and download the log as a CSV file.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\linewidth]{view_logs.png}
+    \caption{View Logs Page}
+\end{figure}
+
+\subsection{Upload Log File Page}
+This page enables users to upload a new log file for processing. Only files with a \texttt{.log} extension are accepted. If the uploaded file does not conform to the Apache log format, the system returns an error message.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\linewidth]{upload_logs.png}
+    \caption{Upload Logs Page}
+\end{figure}
+
+\subsection{Display Log Page}
+Here, the contents of a log file are displayed in CSV format. Users can apply filters based on specific months, days, hours, severity levels, and event IDs. After applying the filters, users can download the refined data in CSV format or navigate to the plots page for visual analysis.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\linewidth]{display_logs.png}
+    \caption{Display Logs Page}
+\end{figure}
+
+\subsection{Plots Page}
+This section presents visual representations of the log data. Users can view different types of graphs, such as time series plots, pie charts for log level distribution, and bar charts for event frequency. A filter form at the top of the page allows users to generate plots for specific time periods. Visualizations can be downloaded in PNG format.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\linewidth]{plots.png}
+    \caption{Plots Page}
+\end{figure}
+
+\section{Modules Used}
+\subsection{Flask}
+Flask is the core web framework that powers the application. It handles routing between pages, manages HTTP requests and responses, and connects frontend templates with backend Python functions. The \texttt{subprocess} module is used within Flask to invoke Bash scripts for file validation and processing.
+
+\subsection{matplotlib}
+Used extensively for data visualization, matplotlib generates time series line plots, pie charts for log levels, and bar charts for event frequency. These plots are rendered dynamically and can be downloaded.
+
+\subsection{Numpy}
+Although used minimally, numpy provides crucial functions like \texttt{isnan()} for data validation and \texttt{max()} for calculating dynamic chart scales.
+
+\subsection{OS}
+The os module facilitates file handling and directory management, such as reading uploaded files and saving filtered versions.
+
+\subsection{Subprocess}
+Subprocess is essential for running Bash scripts that handle parsing, filtering, and validating log files. These scripts process the data efficiently using commands like awk and sed.
+
+\subsection{base64}
+The base64 module encodes binary image data into strings that can be embedded directly into web pages or downloaded as PNG files.
+
+\subsection{IO}
+The io module is used to stream plot images directly to users' devices without saving them to the server, thereby optimizing storage and improving speed.
+
+\section{Directory Structure}
+\textbf{/scripts}
+\begin{itemize}
+    \item \texttt{filter\_logs.sh}: Filters the log file based on user-defined criteria.
+    \item \texttt{parse\_logs.sh}: Parses the log file into CSV format and assigns event IDs.
+    \item \texttt{validate\_logs.sh}: Checks whether the uploaded file conforms to Apache log format.
+\end{itemize}
+\textbf{/static/uploads}: Stores uploaded and filtered log files.
+
+\textbf{/templates}:
+\begin{itemize}
+    \item \texttt{base.html}: The base HTML structure used across all pages.
+    \item \texttt{display.html}: Renders filtered log data and associated controls.
+    \item \texttt{plots.html}: Displays plots and filtering options.
+    \item \texttt{upload.html}: Upload interface for log files.
+    \item \texttt{view\_logs.html}: Shows all uploaded files and navigation options.
+\end{itemize}
+
+\textbf{/app.py}: Contains core logic, route definitions, and script integrations.
+
+\textbf{/requirements.txt}: Lists all project dependencies.
+
+\section*{Basic Features}
+\begin{itemize}
+    \item \textbf{Log Processing}
+    \begin{itemize}
+        \item Accepts Apache log files via a secure upload interface.
+        \item Automatically validates format and converts the data to CSV using Bash scripts.
+    \end{itemize}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\linewidth]{upload_logs.png}
+        \caption{The Upload Page}
+    \end{figure}
+    
+    \item \textbf{Data Filtering}
+    \begin{itemize}
+        \item Users can apply filters such as date, time, level, and event ID.
+        \item Filtering is executed through a combination of Python and efficient Bash scripts.
+    \end{itemize}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\linewidth]{display_logs.png}
+        \caption{Data Filtering Page}
+    \end{figure}
+    
+    \item \textbf{Visualization}
+    \begin{itemize}
+        \item Plots include line graphs, pie charts, and bar charts.
+        \item Interactive interface with filter options for customized visualizations.
+        \item Users can export both data and plots.
+    \end{itemize}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\linewidth]{plots.png}
+        \caption{Visualization Page}
+    \end{figure}
+\end{itemize}
+
+\section*{Advanced Features}
+\begin{itemize}
+    \item \textbf{Dynamic Analysis}
+    \begin{itemize}
+        \item Real-time plot generation using current data.
+        \item Filter plots by time ranges to observe changes over specific periods.
+    \end{itemize}
+
+    \item \textbf{Security}
+    \begin{itemize}
+        \item Ensures safe file handling by validating file names.
+        \item Prevents unsupported file uploads through format checks.
+    \end{itemize}
+
+    \item \textbf{Upload History}
+    \begin{itemize}
+        \item Maintains a list of previously uploaded files.
+        \item Quick-access buttons let users revisit previous analyses easily.
+    \end{itemize}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.5\linewidth]{view_logs.png}
+        \caption{Upload History and File Navigation}
+    \end{figure}
+\end{itemize}
+
+\section{Project Journey}
+Working on this project provided me with a deep understanding of how modern web applications are built and deployed. It taught me not only how data can be processed and visualized on the backend but also how different technologies—Python, Bash, and HTML/CSS—can be integrated seamlessly.
+
+I faced several technical challenges, such as mastering Flask routing and Jinja templating, fixing errors related to carriage returns that affected CSV file generation, and understanding modules like \texttt{os}, \texttt{subprocess}, \texttt{base64}, and \texttt{io}. These challenges turned into valuable learning experiences as I resolved them through reading documentation, discussing with peers, and seeking support from generative AI tools when necessary.
+
+\section{Bibliography}
+\begin{itemize}
+    \item Class slides provided during the course
+    \item Official documentation for all used Python modules
+    \item YouTube tutorials for Flask and Jinja2
+    \item Generative AI tools for code explanation and bug fixing
+\end{itemize}
+
+\end{document}
+
