@@ -1,0 +1,14 @@
+Month,Day,Timestamp,Year,Level,Message,EventId
+Dec,05,14:01:47,2005,notice,"jk2_init() Found child 6100 in scoreboard slot 7",E1
+Dec,05,14:01:47,2005,notice,"jk2_init() Found child 6101 in scoreboard slot 8",E1
+Dec,05,14:01:47,2005,notice,"jk2_init() Found child 6099 in scoreboard slot 6",E1
+Dec,05,14:01:48,2005,notice,"workerEnv.init() ok /etc/httpd/conf/workers2.properties",E2
+Dec,05,14:01:48,2005,error,"mod_jk child workerEnv in error state 7",E3
+Dec,05,14:01:48,2005,notice,"workerEnv.init() ok /etc/httpd/conf/workers2.properties",E2
+Dec,05,14:01:48,2005,error,"mod_jk child workerEnv in error state 9",E3
+Dec,05,14:01:48,2005,notice,"workerEnv.init() ok /etc/httpd/conf/workers2.properties",E2
+Dec,05,14:01:48,2005,error,"mod_jk child workerEnv in error state 8",E3
+Dec,05,14:11:40,2005,notice,"jk2_init() Found child 6115 in scoreboard slot 10",E1
+Dec,05,14:11:43,2005,error,"[client 141.154.18.244] Directory index forbidden by rule: /var/www/html/",E4
+Dec,05,14:11:45,2005,notice,"workerEnv.init() ok /etc/httpd/conf/workers2.properties",E2
+Dec,05,14:11:45,2005,error,"mod_jk child workerEnv in error state 7",E3
